@@ -19,6 +19,7 @@ A solution set is:
  */
 public class CombinationSum {
      public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates, int target) {
+	 //can't process [1,1],2  this means no duplicate elements in candidates. 但是OJ能过 存在错误.所以这是错误版本
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
         ArrayList<Integer> temp = new ArrayList<Integer>();
         Arrays.sort(candidates);
@@ -41,6 +42,27 @@ public class CombinationSum {
     /**
      * @param args the command line arguments
      */
+	 
+	 public ArrayList<ArrayList<Integer>> combinationSum(int[] num, int target) {  //这应该是正确版本
+        Arrays.sort(num);
+        ArrayList<Integer> temp = new ArrayList<Integer>();
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        dfs(result, temp, num, target,0);
+        return result;
+    }
+    public void dfs(ArrayList<ArrayList<Integer>> result, ArrayList<Integer> temp,int[] num, int target, int start){
+        if(target<0) return;
+        if(target==0){
+            result.add(new ArrayList<Integer>(temp));
+            return;
+        }
+        for(int i = start; i < num.length; i++){
+            temp.add(num[i]);           // pass parameter i+1 instead of i to achieve Each number only be used once in the combination.
+            dfs(result, temp, num, target-num[i],i); 
+            temp.remove(temp.size()-1);
+            while(i<num.length-1&&num[i]==num[i+1]){ i++;} 
+        }
+    }
     public static void main(String[] args) {
         // TODO code application logic here
     }
